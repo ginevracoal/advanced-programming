@@ -15,7 +15,7 @@ using namespace std;
 //allocates on the heap an array of a given size, initializes its elements and returns the pointer to the first element
 template <typename T>
 T* allocate(int n){
-  T* array = new T [n]; //allocates on the HEAP an array of size lenght and defines a pointer to its first element array[0]
+  T* array = new T [n]; //allocates on the HEAP an array of size n and defines a pointer to its first element array[0]
   for(int i=0; i<n; i++)
     cin >> array[i];
   return array;
@@ -36,9 +36,9 @@ int main(){
   int lenght;
   
   cout << "Enter the lenght of the array\n";
-  cin >> lenght;
+  cin >> length;
   
-  print_rev(lenght, allocate(lenght));
+  print_rev(length, allocate(length));
   return 0;
 }
 
