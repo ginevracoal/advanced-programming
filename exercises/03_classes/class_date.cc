@@ -15,15 +15,15 @@ Implement a class Date. This class must meet the following requirements:
 #include <iostream>
 using namespace std;
 
+//scoped enum
+enum M{jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec};
+	
 
 class Date {
 
 	//these members are private by default
   int day, year;
-
-	//scoped enum
-	enum M{jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec};
-	M month;	
+	M month;
 
 	//test for leap years
 	bool is_leap(int year) const{
@@ -50,24 +50,24 @@ class Date {
 		~ Date(){}
 };
 
-int month_days(M month){
+int Date::month_days(M month){
 	switch (month){
-		case month::jan:
-		case month::mar:
-		case month::may:
-		case month::jul:
-		case month::aug:
-		case month::oct:
-		case month::dec:
+		case M::jan:
+		case M::mar:
+		case M::may:
+		case M::jul:
+		case M::aug:
+		case M::oct:
+		case M::dec:
 		  return 31;
 
-		case month::apr:
-		case month::jun:
-		case month::sep:
-		case month::nov:
+		case M::apr:
+		case M::jun:
+		case M::sep:
+		case M::nov:
 		  return 30;
 
-		case month::feb:
+		case M::feb:
 		  return 28;
 	}
 } 
@@ -78,20 +78,20 @@ Date::Date(int d, M m, int y): day{d}, month{m}, year{y} {}
 
 void print_date(Date date){
 		cout << day << " " << month << " " << year << endl;
-	}
+}
 
 //inserire il dettaglio dell'anno bisestile!!
 Date following_day(Date date){
-	if(day > month_days(month)){
-		day=1;
-		++month;
+	if(day > month_days(get_month(date))){
+		get_day(date)=1;
+		++get_month(date);
 	} else {
-		++day;
+		++get_day(date);
 	}
 
-	if (month>12){
-		month=1;
-		++year;
+	if (get_month(date)>12){
+		get_month(date)=1;
+		++get_year(date);
 	}	
 
 	return date;
@@ -109,8 +109,10 @@ Date Date::add_days(const unsigned int n, Date date){
 int main(int argc, char *argv[]){
 	cout << "Insert the date and the number of days.\n";
 	
-	Date.get_day(argv[0]);
-	Date.get_month(argv[1]);
+	Date date;
+
+	date.setday()=atoi(argv[0]);
+	date.get_month(argv[1]);
   Date.get_year(argv[2]);
 
   Date.add_days(argv[3], date); //call member function
