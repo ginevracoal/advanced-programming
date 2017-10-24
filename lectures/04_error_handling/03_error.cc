@@ -9,10 +9,6 @@
 // never be greater than 50
 double square_root(const double d);
 
-struct Square_root_invalid {
-  std::string message;
-};
-
 int main() {
   try {
     std::cout << "please insert a number\n";
@@ -21,7 +17,7 @@ int main() {
     double d = square_root(number);
     std::cout << "square root of " << number << " is " << d << '\n';
     return 0;
-  } catch (std::runtime_error& e) {
+  } catch (const std::runtime_error& e) {
     std::cerr << e.what() << std::endl;
     return 1;
   } catch (...) {
