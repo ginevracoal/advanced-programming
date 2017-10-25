@@ -20,7 +20,6 @@ enum M{jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec};
 	
 
 class Date {
-
 	//these members are private by default
   int day, year;
 	M month;
@@ -111,9 +110,9 @@ int main(int argc, char *argv[]){
 	
 	Date date;
 
-	date.setday()=atoi(argv[0]);
-	date.get_month(argv[1]);
-  Date.get_year(argv[2]);
+	date.setday(atoi(argv[0]));
+	date.setmonth(argv[1]);
+  date.setyear(atoi(argv[2]));
 
   Date.add_days(argv[3], date); //call member function
 	Date.print_date(date);
