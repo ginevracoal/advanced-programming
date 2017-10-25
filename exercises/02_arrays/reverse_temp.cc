@@ -6,7 +6,6 @@ Write a template function that prints the elements of an array in the reverse or
 
 Test with integers and doubles.*/
 
-
 #include <iostream>
 #include <string>
 
@@ -31,14 +30,14 @@ void print_rev(int n, T* array){
   cout << endl;
 }
 
-
 int main(){
-  int lenght;
+  int length;
+	//T* array = allocate(length);
   
   cout << "Enter the lenght of the array\n";
   cin >> length;
   
-  print_rev(length, allocate(length));
+  print_rev(length, *allocate(length));
   return 0;
 }
 
