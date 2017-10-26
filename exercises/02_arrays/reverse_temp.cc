@@ -18,12 +18,13 @@ T* allocate(int n){
   for(int i=0; i<n; i++)
     cin >> array[i];
   return array;
-  delete[] array; //deallocates the memory block previously occupied using new[]
+	delete[] array; //deallocates the memory block previously occupied using new[]
 }
 
 //prints the elements of an array in the reverse order
 template <typename T>
-void print_rev(int n, T* array){
+void print_rev(int n){
+	T* array= allocate(n);
   for (int i=n-1; i>=0; i--){
     cout << array[i] << " ";
   }
@@ -32,12 +33,11 @@ void print_rev(int n, T* array){
 
 int main(){
   int length;
-	//T* array = allocate(length);
-  
-  cout << "Enter the lenght of the array\n";
+
+  cout << "Enter the length of the array\n";
   cin >> length;
   
-  print_rev(length, *allocate(length));
+  print_rev(length);
   return 0;
 }
 
