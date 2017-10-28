@@ -7,7 +7,6 @@ Write a template function that prints the elements of an array in the reverse or
 Test with integers and doubles.*/
 
 #include <iostream>
-#include <string>
 
 using namespace std;
 
