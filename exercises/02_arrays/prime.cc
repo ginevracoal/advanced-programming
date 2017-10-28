@@ -22,9 +22,9 @@ int remainder = 6%3;
 //checks if a is a prime number
 bool is_prime(int a){
 	//int r;
-	for(int d=2; d <= a; d++){
+	for(int d=2; d < a; d++){
 		//r = a % d;
-		if (a % d == 0 && (d != 1 || d != a)){
+		if (a % d == 0){
 			return false;
 			break;
 		} 
@@ -34,7 +34,7 @@ bool is_prime(int a){
 
 
 int main(){
-	int count=0;
+	int count=1;
 	int *array[100];
 	int *primes[100];
 
@@ -42,7 +42,8 @@ int main(){
 	for(int i; i < 100; i++)
 		*array[i] = i + 1;
 	
-	int i=0;
+	int i=2;
+	*primes[0]=2;
 	while(i < 100 && is_prime(*array[i])){
 		primes[count] = array[i];
 		std::cout << primes[count] << " \n";
