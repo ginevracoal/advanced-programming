@@ -16,7 +16,7 @@ Implement a class Date. This class must meet the following requirements:
 using namespace std;
 
 //scoped enum
-enum class M{jan=1, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec};
+enum class M{jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec};
 	
 class Date {
 	//these members are private by default
@@ -35,11 +35,11 @@ class Date {
   public:
 		//constructor declaration and definition
 		Date(int d, int m, int y): day{d}, month{M(m)}, year{y} {}
-
+		
 		//inlined member functions
 
 		//returns the number of days in month
-		int month_days(M month);
+		int month_days(M month, Date date);
 
 		//adds n days to date
 		Date add_days(int n, Date date){
@@ -49,11 +49,7 @@ class Date {
 		}
 		
     int get_day() const {return day;} 
-    M get_month() const {
-
-		return month;
-		}
-
+    M get_month() const {return month;}
     int get_year() const {return year;}
 
 		void print_date(Date date){
@@ -66,7 +62,7 @@ class Date {
 		~ Date(){}
 };
 
-int Date::month_days(M month){
+int Date::month_days(M month, Date date){
 	switch (month){
 		case M::jan: 
 		case M::mar:
@@ -84,7 +80,11 @@ int Date::month_days(M month){
 		  return 30;
 
 		case M::feb:
-		  return 28;
+			if (is_leap(date.get_year())==true){
+				return 29;
+			}else{
+		  	return 28;
+			}
 	}
 } 
 
@@ -95,19 +95,17 @@ Date Date::following_day(Date date){
 	M month = date.get_month();
 	int year = date.get_year();
 
-	if(month_days(month) == 31){
+	if(month_days(month, date) == 31){
 		if (month == M::dec){
 				month = M::jan;
 				++year;
 			}
 		day == 1;
-		month = M( int(month) + 1 ); //
+		month = M(int(month)+1); //
 	} else {
 		++day;
 	}
 
-		
-	
 	date.day = day;
 	date.month = month;
 	date.year = year;
