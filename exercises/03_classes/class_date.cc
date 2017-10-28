@@ -34,7 +34,7 @@ class Date {
 	
   public:
 		//constructor declaration and definition
-		Date(int d, int m, int y): day{d}, month{M(m)}, year{y} {}
+		Date(int d, int m, int y): day{d}, month{m}, year{y} {}
 		
 		//inlined member functions
 
@@ -49,12 +49,12 @@ class Date {
 		}
 		
     int get_day() const {return day;} 
-    M get_month() const {return month;}
+    M get_month() const {return M(month);}
     int get_year() const {return year;}
 
 		void print_date(Date date){
 			cout << date.get_day() << endl;
-			cout << int(date.get_month()) << endl;
+			cout << date.get_month() << endl;
 			cout << date.get_year() << endl;
 		}
 
@@ -114,11 +114,11 @@ Date Date::following_day(Date date){
 }
 
 
-int main(int argc, char * argv[]){
+int main(int argc, char * argv[4]){
 	cout << "Insert the date and the number of days.\n";
 
 	int day = atoi(argv[0]);
-	int month = atoi(argv[1]);
+  int month = atoi(argv[1]);
 	int year = atoi(argv[2]);
 
 	Date date(day, month, year); //create a Date object called date
