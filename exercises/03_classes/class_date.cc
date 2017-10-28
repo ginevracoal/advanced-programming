@@ -16,12 +16,13 @@ Implement a class Date. This class must meet the following requirements:
 using namespace std;
 
 //scoped enum
-enum class M{jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec};
+enum class M{jan=1, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec};
 	
 class Date {
 	//these members are private by default
   int day, year;
 	M month;
+	//char month[4];
 
 	//test for leap years
 	bool is_leap(int year) const{
@@ -29,30 +30,37 @@ class Date {
 	}
 	
 	//adds one day
-	Date following_day(); 
+	Date following_day(Date date); 
 	
   public:
-		//constructor declaration
-		Date(int day, M month, int year);
-		
+		//constructor declaration and definition
+		Date(int d, int m, int y): day{d}, month{M(m)}, year{y} {}
+
 		//inlined member functions
+
+		//returns the number of days in month
+		int month_days(M month);
+
+		//adds n days to date
+		Date add_days(int n, Date date){
+		for (int i=0; i<n; i++)
+			date = following_day(date);
+		return date;		
+		}
+		
     int get_day() const {return day;} 
-    M get_month() const {return month;}
-    int get_year() const {return year;}
+    M get_month() const {
 
-		void set_day(int d){d = day;}
-		void set_month(M m){m = month;}
-		void set_year(int y){y = year;}
-
-		Date add_days(const unsigned int n, Date date){
-		int i;
-		for (i=0; i<n; i++)
-			following_day(date);
-		return date;
+		return month;
 		}
 
-		int month_days(M month);
-		void print_date(Date date);
+    int get_year() const {return year;}
+
+		void print_date(Date date){
+			cout << date.get_day() << endl;
+			cout << int(date.get_month()) << endl;
+			cout << date.get_year() << endl;
+		}
 
 		//destructor
 		~ Date(){}
@@ -60,9 +68,9 @@ class Date {
 
 int Date::month_days(M month){
 	switch (month){
-		case M::jan:
+		case M::jan: 
 		case M::mar:
-		case M::may:
+		case M::may: 
 		case M::jul:
 		case M::aug:
 		case M::oct:
@@ -81,47 +89,48 @@ int Date::month_days(M month){
 } 
 
 
-//parametrized constructor definition
-Date::Date(int d, M m, int y): day{d}, month{m}, year{y} {}
-
-void Date::print_date(Date date){
-		cout << day << " " << month << " " << year << endl;
-}
-
-//inserire il dettaglio dell'anno bisestile!!
 Date Date::following_day(Date date){
-	if(day > month_days(get_month(date))){
-		get_day(date)=1;
-		++get_month(date);
+
+	int day = date.get_day();
+	M month = date.get_month();
+	int year = date.get_year();
+
+	if(month_days(month) == 31){
+		if (month == M::dec){
+				month = M::jan;
+				++year;
+			}
+		day == 1;
+		month = M( int(month) + 1 ); //
 	} else {
-		++get_day(date);
+		++day;
 	}
 
-	if (get_month(date)>12){
-		get_month(date)=1;
-		++get_year(date);
-	}	
+		
+	
+	date.day = day;
+	date.month = month;
+	date.year = year;
 
 	return date;
 }
 
 
-
-int main(int argc, char *argv[]){
+int main(int argc, char * argv[]){
 	cout << "Insert the date and the number of days.\n";
-	
-	Date date;
 
-	date.set_day(atoi(argv[0]));
-	date.set_month(argv[1]);
-  date.set_year(atoi(argv[2]));
+	int day = atoi(argv[0]);
+	int month = atoi(argv[1]);
+	int year = atoi(argv[2]);
 
-  date.add_days(argv[3], date); //call member function
+	Date date(day, month, year); //create a Date object called date
+
+	//call public member functions
+  date.add_days(atoi(argv[3]), date);
 	date.print_date(date);
+  
+	
 	return 0;
 }
-
-
-
 
 
