@@ -32,24 +32,37 @@ bool is_prime(int a){
 	return true;
 }
 
+//prints the first n primes
+void print_primes(int n, int primes[]){
+	for(int i=1; i < n; i++){
+ 		std::cout << primes[i] << " ";
+	}	
+}
 
 int main(){
-	int count=1;
-	int *array[100];
-	int *primes[100];
-
-	//initializing the array
-	for(int i; i < 100; i++)
-		*array[i] = i + 1;
 	
-	int i=2;
-	*primes[0]=2;
-	while(i < 100 && is_prime(*array[i])){
-		primes[count] = array[i];
-		std::cout << primes[count] << " \n";
-		++i;
-		++count;
+	//counts prime numbers
+	int count=1;
+
+	//array containing prime numbers between 1 and 100
+	int * primes = new int [100];
+
+	//builds the array and counts the number of primes
+	primes[0] = 2;
+	for(int i=2; i <= 100; i++){
+		if(is_prime(i)){
+			primes[count] = i;		
+			count++;
+		}
 	}
+
+	//prints prime numbers 
+	std::cout << "The first " << count << " prime numbers are: ";	
+	print_primes(count, primes);
+	std::cout << std::endl;
+
+	//deallocates the memory
+	delete[] primes;
 
 	return 0;
 }
