@@ -21,9 +21,7 @@ int remainder = 6%3;
 
 //checks if a is a prime number
 bool is_prime(int a){
-	//int r;
 	for(int d=2; d < a; d++){
-		//r = a % d;
 		if (a % d == 0){
 			return false;
 			break;
