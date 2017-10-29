@@ -5,29 +5,22 @@ Implement the Sieve of Eratosthenes algorithm. Write a code that prints on scree
 #include <iostream>
 #include <math.h>
 
-
+//assigns true value to prime numbers and false to the others
 void sieve(int n, bool A[]){
-	int i,j;
-
-//	bool* A= new bool[n-2];
-
-	for (i=2; i<=sqrt(n); i++){
+	for (int i=2; i<=sqrt(n); i++){
 		A[i-2] = true;
-		for (j=i*i; j<=n; j+=i)
+		for (int j=i*i; j<=n; j+=i)
      	A[j-2] = false;
 	}
-
-//	delete[] A;
 }
 
-//prints the first n primes
+//prints the first n primes according to boolean values in A
 void print_primes(int n, bool A[]){
 	std::cout << "The first prime numbers up to " << n << " are: ";	
 	
-	
 	for (int i=2; i<=n; i++){
 		while (A[i-2])
-			std::cout << i << " " ;
+			std::cout << i << " ";
 	}
 
 	std::cout << std::endl;
@@ -35,17 +28,17 @@ void print_primes(int n, bool A[]){
 
 int main(){
 	int i, N;
-	bool * A = new bool[N-2];
 
 	std::cout << "Please enter N:\n";
 	std::cin >> N;
+
+	bool * A = new bool[N-2];
 	
 	sieve(N, A);
 
 	print_primes(N, A);
 	
-	return 0;
 	delete[] A;
-	
+	return 0;
 }
 
