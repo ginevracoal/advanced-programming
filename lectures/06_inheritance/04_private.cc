@@ -1,5 +1,5 @@
-#include <iostream>
 #include <ap_error.h>
+#include <iostream>
 
 class Animal {
   unsigned int age;
@@ -7,13 +7,14 @@ class Animal {
 
  public:
   Animal(const unsigned int a, const double w) : age{a}, weight{w} {
-    if (weight < 0)
-      AP_error("invalid weight:", w);
+    if (weight < 0) AP_error("invalid weight:", w);
   }
 
   Animal() : Animal{0, 0} {}  // delegating constructor
 
-  virtual void speak() const = 0;
+  virtual void speak() const = 0;  // A pure virtual function makes sure that
+                                   // the class cannot be instantiated.
+                                   // It is called an "Abstract class".
   virtual void info() const noexcept {
     std::cout << "age:\t" << age << '\n' << "weight:\t" << weight << '\n';
   }
@@ -42,9 +43,7 @@ class Snake : public Animal {
   void speak() const noexcept override { std::cout << "ssss\n"; }
 };
 
-inline void newline() noexcept {
-  std::cout << std::endl;
-}
+inline void newline() noexcept { std::cout << std::endl; }
 
 class DangerousSnake : public Snake {
  public:

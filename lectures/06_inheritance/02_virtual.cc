@@ -59,6 +59,8 @@ int main() {
 
     newline();
 
+    // There exists an hidden id associated to Snake,
+    // which is used to access the virtual table in the right place
     Animal* p = new Snake{1, 2.3, false};
 
     std::cout << "through pointer\n";
