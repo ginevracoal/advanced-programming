@@ -1,5 +1,5 @@
-#include <iostream>
 #include <ap_error.h>
+#include <iostream>
 
 // each animal should implement
 // void info()
@@ -15,7 +15,7 @@ struct Animal {
 };
 
 struct Dog {
-  Animal _animal;
+  Animal _animal;  // the dog has an animal, sounds wrong
   void speak() const noexcept { std::cout << "Bau\n"; }
   void info() { _animal.info(); }
   Dog() : _animal{} {}
@@ -31,14 +31,15 @@ struct Snake {
   void info() const noexcept {
     _animal.info();
     std::cout << "dangerous:\t" << (dangerous ? "true" : "false") << std::endl;
+    // the operator in this case writes 1 or 0
   }
   void speak() const noexcept { std::cout << "ssss\n"; }
 };
 
-inline void newline() noexcept {
-  std::cout << std::endl;
-}
+inline void newline() noexcept { std::cout << std::endl; }
+// inline functions should be always in header files
 
+// this is called a static polymorphism
 template <typename AT>
 void print_animal(const AT& a) noexcept {
   std::cout << "through ref\n";

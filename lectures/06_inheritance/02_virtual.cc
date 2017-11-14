@@ -1,13 +1,12 @@
-#include <iostream>
 #include <ap_error.h>
+#include <iostream>
 
 struct Animal {
   unsigned int age;
   double weight;
 
   Animal(const unsigned int a, const double w) : age{a}, weight{w} {
-    if (weight < 0)
-      AP_error("invalid weight:", w);
+    if (weight < 0) AP_error("invalid weight:", w);
   }
 
   Animal() : Animal{0, 0} {}  // delegating constructor
@@ -22,6 +21,12 @@ struct Animal {
 
 struct Dog : public Animal {
   void speak() const noexcept override { std::cout << "Bau\n"; }
+  // The function speak() is virtual. You write override to indicate that.
+
+  // If I write
+  // void speak() const noexcept override final { std::cout << "Bau\n"; }
+  // it means that speak overrides but cannot be overrited.
+
   Dog() = default;
   Dog(const unsigned int a, const double d) : Animal{a, d} {}
 };
@@ -38,9 +43,7 @@ struct Snake : public Animal {
   void speak() const noexcept override { std::cout << "ssss\n"; }
 };
 
-inline void newline() noexcept {
-  std::cout << std::endl;
-}
+inline void newline() noexcept { std::cout << std::endl; }
 
 void print_animal(const Animal& a) noexcept {
   std::cout << "throught ref\n";
@@ -60,7 +63,8 @@ int main() {
 
     std::cout << "through pointer\n";
     p->info();
-    p->speak();
+    p->speak();  // Now it calls the speak function of Snake,
+                 // but the call to an override is slower.
 
     delete p;
 
