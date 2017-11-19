@@ -6,29 +6,31 @@
 using namespace std;
 
 struct Not_a_number {};
+void get_number();
 
 int main(){
+	double number;	
 	try {
-		double x;
-		while(cin >> x){
-			cout << "Enter a number\n"; 
-			get_number(x);
+		cout << "Enter a number\n"; 
+		while(cin >> number){
 		}
+		get_number();
+		cout << "This is a number\n";
 		return 0;
-	} catch (void Not_a_number){
+	} catch (const Not_a_number){
 		cerr << "This is not a number.\n";
 		return 1;
+	} catch (...){
+		cerr << "Unknown exception. Aborting.\n";
+		return 2;
 	}
-
-//  }
-//  if(!cin){
-//      cin.clear(); // clear error flags
-//      cin.ignore(100, '\n'); // ignores remainder of stream
-//      cout << "This is not a number\n";
-//  }
+	cout << "Enter a number\n"; 
+	
 }
 
-
-void get_number(double x){
+void get_number(){
  if (!cin)
+		cin.clear(); // clear error flags
+    cin.ignore(100, '\n'); // ignores remainder of stream
+		throw Not_a_number{};
 }
