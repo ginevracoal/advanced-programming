@@ -21,22 +21,11 @@ using namespace std;
 // scoped enum
 enum class M { jan = 1, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec };
 
-//
-// std::ostream& operator<<(std::ostream& os, const Date& date) {
-//   return os << date.day() << "/" << date.month() << "/" << date.year() <<
-//   endl;
-// }
-
 class Date {
   // these members are private by default
   int _day;
   int _month;
   int _year;
-
-  // // test for leap years
-  // bool is_leap(int year) const {
-  //   return ((year % 4 == 0) && (year % 100 != 0 || year % 400 == 0));
-  // }
 
  public:
   // constructor declaration and definition
@@ -44,68 +33,25 @@ class Date {
 
   // inlined member functions
 
-  // returns the number of days in month
+  // returns the number of days in a month
   int days_in_month(int month, int year);
-  // int days_in_month(Date date);
-
-  // // adds one day
-  // Date following_day(Date date);
 
   // adds n days to date
   void add_days(const unsigned int n, Date date);
-  // Date add_days(const unsigned int n, Date date) {
-  //   for (int i = 0; i < n; i++) date = following_day(date);
-  //   return date;
-  // }
 
   int day() const { return _day; }
   int month() const { return _month; }
   int year() const { return _year; }
 
-  void setDate(int d, int m, int y) {
-    _day = d;
-    _month = m;
-    _year = y;
-  }
-
-  // void setDay(int d) { _day = d; }
-  // void setMonth(M m) { _month = m; }
-  // void setYear(int y) { _year = y; }
-
-  // void print_date(Date date) {
-  //   cout << "The new date is: ";
-  //   cout << _day << "/" << _month << "/" << _year << endl;
+  // void setDate(int d, int m, int y) {
+  //   _day = d;
+  //   _month = m;
+  //   _year = y;
   // }
 
   // destructor
   ~Date() {}
 };
-
-// int Date::days_in_month(Date date) {
-//   switch (_month) {
-//     case M::jan:
-//     case M::mar:
-//     case M::may:
-//     case M::jul:
-//     case M::aug:
-//     case M::oct:
-//     case M::dec:
-//       return 31;
-
-//     case M::apr:
-//     case M::jun:
-//     case M::sep:
-//     case M::nov:
-//       return 30;
-
-//     case M::feb:
-//       if (is_leap(date.year()) == true) {
-//         return 29;
-//       } else {
-//         return 28;
-//       }
-//   }
-// }
 
 // test for leap years
 bool is_leap(int year) {
@@ -176,10 +122,6 @@ int main() {
     return 1;
   }
   std::cin >> year;
-
-  // int day = atoi(argv[0]);
-  // int month = atoi(argv[1]);
-  // int year = atoi(argv[2]);
 
   Date date(day, month, year);  // create a Date object called date
 
