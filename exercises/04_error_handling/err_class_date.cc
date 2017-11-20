@@ -16,7 +16,17 @@ enum class M { jan = 1, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec };
 
 struct missing_symbol {};
 struct invalid_day {};
-struct invalid_month {};
+struct invalid_month {
+  string message;
+};
+struct invalid_year {
+  string message;
+};
+
+// test for leap years
+bool is_leap(int year) {
+  return ((year % 4 == 0) && (year % 100 != 0 || year % 400 == 0));
+}
 
 class Date {
   int _day;
@@ -25,11 +35,16 @@ class Date {
 
  public:
   Date(int d, int m, int y) : _day{d}, _month{m}, _year{y} {
-    if (_day > days_in_month(_month, _year) || _day == 0) {
+    if (_day > 31 || _day == 0) {
       throw invalid_day{};
     }
     if (_month > 12 || _month == 0) {
-      throw invalid_month{};
+      throw invalid_month{" Please enter a number between 1 and 31."};
+    } else if (_day > 29 && _month == int(M::feb)) {
+      throw invalid_month{" Please choose a month different from february."};
+    }
+    if (is_leap(_year) == false && _day > 28) {
+      throw invalid_year{" Please enter a leap year."};
     }
   }
 
@@ -51,11 +66,6 @@ class Date {
 
   ~Date() {}
 };
-
-// test for leap years
-bool is_leap(int year) {
-  return ((year % 4 == 0) && (year % 100 != 0 || year % 400 == 0));
-}
 
 int Date::days_in_month(int month, int year) {
   switch (M(month)) {
@@ -154,11 +164,13 @@ int main() {
     cerr << "Symbol / is missing.\n";
     return 1;
   } catch (const invalid_day) {
-    cerr << "Day value is not valid. \n";
+    cerr << "Day value is not valid. Please enter a number between 1 and 31.\n";
     return 2;
-  } catch (const invalid_month) {
-    cerr << "Month value is not valid. Please enter a number between 1 and "
-            "12.\n";
+  } catch (const invalid_month& s) {
+    cerr << "Month value is not valid." << s.message << endl;
+    ;
     return 3;
+  } catch (const invalid_year& s) {
+    cerr << "Year value is not valid." << s.message << endl;
   }
 }
