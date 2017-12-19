@@ -41,10 +41,6 @@ class List {
   // return the size of the list
   unsigned int size() { return _size; }
 
-  // void reset();
-
-  // void prune_node(const value_type v);
-
   void call_custom_function() {
     node* temp{head.get()};
     while (temp) {
@@ -87,7 +83,7 @@ class List {
   unsigned int _size;          // number of nodes
 };
 
-template <typename value_type v>
+template <typename value_type>
 class List<value_type>::Iterator {
   using node = List<value_type>::node;  // using an alias
   node* current;
@@ -125,11 +121,11 @@ bool operator!=(const Iterator& other) {
 
 template <typename value_type>
 class List<value_type>::constIterator : public List<value_type>::Iterator {
+  using parent = List<value_type>::Iterator;
+
  public:
   using List<value_type>::Iterator;
-  const value_type& operator*() {
-    return List<value_type>::Iterator::operator*();
-  }
+  const value_type& operator*() const { return parent::operator*(); }
 }
 
 // insert a new node with the value v according to the method m
@@ -144,9 +140,11 @@ void List<value_type>::insert(const value_type& v, const Insertion_method m) {
       case Insertion_method::push_back:
         push_back(v);
         break;
+
       case Insertion_method::push_front:
         push_front(v);
         break;
+
       default:
         std::cerr << "error\n";
         break;
@@ -156,7 +154,7 @@ void List<value_type>::insert(const value_type& v, const Insertion_method m) {
 
 // print the values of the nodes
 template <typename value_type>
-void List<value_type>::print() {
+void List<value_type>::print() const {
   // node* temp = head.get();  // get() returns a pointer to the managed object
 
   // while (temp) {  // temp != nullptr
@@ -177,15 +175,16 @@ void List<value_type>::print() {
 }
 
 // delete all the nodes of the list
-template <typename value_type>
-void List<value_type>::reset() {
-  std::unique_ptr<node> temp = std::move(head);
-  while (temp) {  // temp != nullptr
-    temp->next = std::move(temp);
-  }
-  temp = nullptr;
-  _size = 0;
-}
+
+// template <typename value_type>
+// void List<value_type>::reset() {
+//   std::unique_ptr<node> temp = std::move(head);
+//   while (temp) {  // temp != nullptr
+//     temp->next = std::move(temp);
+//   }
+//   temp = nullptr;
+//   _size = 0;
+// }
 
 // push front adds a new node where the head is pointing
 template <typename value_type>
@@ -200,7 +199,7 @@ void List<value_type>::push_front(const value_type& v) {
 template <typename value_type>
 void List<value_type>::push_back(const value_type& v) {
   node* temp = head.get();
-  while (temp->next) {          // while (temp->next.get() != nullprt) {
+  while (temp->next) {          // or while (temp->next.get() != nullprt) {
     temp = (temp->next).get();  // move along all the nodes
   }
   temp->next.reset(new node{v});  // move ptr to the last nullptr
