@@ -1,21 +1,23 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 a.out
 *.x
 
 =======
 .gitignore
 # temp file
+=======
+bucket*
+*as_src*
+# 
+>>>>>>> 93b0dc48c1426a7afc5dd55febba301ba04f2996
 *.swp
-# jupyter save points
 .ipynb_checkpoints
-# not shared solutions or lectures 
 .*
-exam*
-.*.py 
-.*.ipynb
-# draft of the syllabus
-.README.md
-# modules bytecode
 __pycache__
 *pyc
+<<<<<<< HEAD
 >>>>>>> dd6f321217419bb809591468e8cdda3f7b21dfa9
+=======
+
+>>>>>>> 93b0dc48c1426a7afc5dd55febba301ba04f2996
