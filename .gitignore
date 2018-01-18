@@ -17,7 +17,11 @@ bucket*
 __pycache__
 *pyc
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> dd6f321217419bb809591468e8cdda3f7b21dfa9
 =======
+=======
+*.ini
+>>>>>>> 87520dfec3991f0a259aa43e74f02061e82a8442
 
 >>>>>>> 93b0dc48c1426a7afc5dd55febba301ba04f2996
