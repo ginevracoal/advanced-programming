@@ -106,8 +106,7 @@ void List<T>::push_front(const T& v) {
 template <typename T>
 void List<T>::push_back(const T& v) {
   Node* tmp{head.get()};
-  while (tmp->next.get() != nullptr)
-    tmp = tmp->next.get();
+  while (tmp->next.get() != nullptr) tmp = tmp->next.get();
   tmp->next.reset(new Node{v});
 }
 
@@ -124,8 +123,7 @@ void List<T>::print() const {
 
   auto it{this->begin()};
   auto it_end{this->end()};
-  for (; it != it_end; ++it)
-    std::cout << *it << std::endl;
+  for (; it != it_end; ++it) std::cout << *it << std::endl;
 }
 
 int main() {

@@ -15,18 +15,15 @@ int main() {
   int ma[6][5];  // matrix: 6 rows, 5 columns each
 
   for (int i = 0; i < 6; ++i)
-    for (int j = 0; j < 5; ++j)
-      ma[i][j] = 10 * i + j;
+    for (int j = 0; j < 5; ++j) ma[i][j] = 10 * i + j;
 
   for (int i = 0; i < 6; ++i) {
-    for (int j = 0; j < 5; ++j)
-      std::cout << std::setw(3) << ma[i][j];
+    for (int j = 0; j < 5; ++j) std::cout << std::setw(3) << ma[i][j];
     std::cout << std::endl;
   }
 
   for (int i = 0; i < 6; ++i) {
-    for (int j = 0; j < 5; ++j)
-      std::cout << &ma[i][j] << " ";
+    for (int j = 0; j < 5; ++j) std::cout << &ma[i][j] << " ";
     std::cout << std::endl;
   }
 

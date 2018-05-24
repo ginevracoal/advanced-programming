@@ -41,8 +41,7 @@ class Vector {
 
 template <typename num>
 std::ostream& operator<<(std::ostream& os, const Vector<num>& v) {
-  for (const auto& x : v)
-    os << x << " ";
+  for (const auto& x : v) os << x << " ";
   os << std::endl;
   return os;
 }

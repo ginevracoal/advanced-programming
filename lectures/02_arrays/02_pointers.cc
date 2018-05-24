@@ -1,20 +1,20 @@
 #include <iostream>
 
 int main() {
-  int a{5};
-  int* pi{&a};
-  *pi = 9;
+  int a{5};     // assigns the integer 5 to a
+  int* pi{&a};  // pointer to the address of a
+  *pi = 9;      // assigns the integer 9 t a
   std::cout << "a is now " << a << std::endl;
 
   char** ppc;
 
-  int* ap[7];
+  int* ap[7];  // ap is an array of 7 pointers to int
 
   int (*fp)(char*);
 
   int* f(char*);
 
-  void* pv{pi};
+  void* pv{pi};  // pv points to the first element of pi
   // *pv; // we cannot dereference void*
   // ++pv; // we cannot increment. Why?
   int* pi2 = static_cast<int*>(pv);

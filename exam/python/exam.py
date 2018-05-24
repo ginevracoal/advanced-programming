@@ -174,7 +174,7 @@ class PostcardList(object):
 #         self.assertListEqual(srw_test[140], [15])
 #         self.assertListEqual(srw_test[192], [13, 26])
 #         self.assertListEqual(srw_test[203], [6, 9, 11, 12, 24, 31, 42])
-
+ 
 
 if __name__ == '__main__':
     # unittest.main()

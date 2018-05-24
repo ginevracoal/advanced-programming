@@ -106,9 +106,9 @@ class List<value_type>::Iterator {
     ++(*this);  // increment the current value calling the ++it operator
     return it;  // return by value the previous one
   }
-}
+};
 
-bool operator==(const Iterator& other){
+bool operator==(const Iterator& other) {
   return this->current == other.current;  // two iterators are equal if they are
                                           // pointing to the same element
 }
@@ -126,7 +126,7 @@ class List<value_type>::constIterator : public List<value_type>::Iterator {
  public:
   using List<value_type>::Iterator;
   const value_type& operator*() const { return parent::operator*(); }
-}
+};
 
 // insert a new node with the value v according to the method m
 // this method should be used to fill the list
