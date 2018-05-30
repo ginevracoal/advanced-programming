@@ -33,8 +33,8 @@ class Vector {
 
   // move semantics
   // move ctor
-  Vector(Vector&& v) noexcept
-      : _size{std::move(v._size)}, elem{std::move(v.elem)} {
+  Vector(Vector&& v) noexcept : _size{std::move(v._size)},
+                                elem{std::move(v.elem)} {
     std::cout << "move ctor\n";
   }
 
@@ -46,6 +46,11 @@ class Vector {
   }
 
   const num& operator[](const std::size_t& i) const noexcept { return elem[i]; }
+  // 1) returns a const type
+  // 2) takes a const argument and it is a const member function, meaning that
+  // it cannot call any non-const member function and it cannot change any
+  // member variable.
+  // 3) takes a const argument
   num& operator[](const std::size_t& i) noexcept { return elem[i]; }
 
   std::size_t size() const noexcept { return _size; }
@@ -64,8 +69,7 @@ class Vector {
 template <typename num>
 Vector<num>::Vector(const Vector& v) : _size{v._size}, elem{new num[_size]} {
   std::cout << "copy ctor\n";
-  for (std::size_t i = 0; i < _size; ++i)
-    elem[i] = v[i];
+  for (std::size_t i = 0; i < _size; ++i) elem[i] = v[i];
   // std::uninitialized_copy(v.begin(),v.end(),this->begin()); //use placement
   // new
 }
@@ -88,6 +92,7 @@ Vector<num>& Vector<num>::operator=(const Vector& v) {
   //   elem[i] = v[i];
 
   std::copy(v.begin(), v.end(), this->begin());
+  //*this is the object currently pointed to
   return *this;
 
   // is this approach consistent with self-assignment vx=vx?
@@ -98,8 +103,7 @@ Vector<num>& Vector<num>::operator+=(const Vector<num>& rhs) {
   AP_assert(_size == rhs._size, "Vector lenght mismatch:", _size, "!=",
             rhs._size, "\nlhs:", *this, "\nrhs:", rhs);
 
-  for (std::size_t i = 0; i < _size; ++i)
-    elem[i] += rhs[i];
+  for (std::size_t i = 0; i < _size; ++i) elem[i] += rhs[i];
   return *this;
 }
 
@@ -111,8 +115,7 @@ Vector<num> operator+(const Vector<num>& lhs, const Vector<num>& rhs) {
             rhs.size(), "\nlhs:", lhs, "\nrhs:", rhs);
   std::cout << "const\n";
   Vector<num> res(size);
-  for (std::size_t i = 0; i < size; ++i)
-    res[i] = lhs[i] + rhs[i];
+  for (std::size_t i = 0; i < size; ++i) res[i] = lhs[i] + rhs[i];
   return res;
 }
 
@@ -130,8 +133,7 @@ Vector<num> operator+(Vector<num>&& lhs, const Vector<num>& rhs) {
 template <typename num>
 std::ostream& operator<<(std::ostream& os, const Vector<num>& v) {
   if (v.size() < 30) {
-    for (const auto& x : v)
-      os << x << " ";
+    for (const auto& x : v) os << x << " ";
     os << std::endl;
   }
   return os;
@@ -167,8 +169,7 @@ int main() {
       //   v3[i] = i;
 
       int c = 0;
-      for (auto& x : v3)
-        x = c++;
+      for (auto& x : v3) x = c++;
     }
     // v3=v3;
     std::cout << "\nv2 = " << v2;

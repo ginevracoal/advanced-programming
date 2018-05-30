@@ -11,6 +11,8 @@ class Vector {
 
   ~Vector() { delete[] elem; }
 
+  // For functions, auto specifies that the return type will be deduced from its
+  // return statements.
   auto size() const { return _size; }
 
   auto& operator[](const unsigned int i) { return elem[i]; }
@@ -23,8 +25,7 @@ class Vector {
 int main() {
   Vector<double> v{10};
 
-  for (auto i = 0; i < v.size(); ++i)
-    v[i] = i;
+  for (auto i = 0; i < v.size(); ++i) v[i] = i;
 
   v.pretty_print();
 

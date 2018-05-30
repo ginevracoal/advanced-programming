@@ -1,6 +1,8 @@
 #include <iostream>
-
-template <typename num>
+// A function template defines a family of functions
+// A template must be instantiated, otherwise it does not create any object
+// Using typename or class is the same
+template <typename num>  // template function declaration
 void print_vector(const num* vec, const int n);  // print_vector is
                                                  // parametrized
                                                  // w.r.t. the type
@@ -10,6 +12,8 @@ void print_vector(const num* vec, const int n);  // print_vector is
                                                  // num"
 
 // reads from command line the size of an array
+// argc will be the number of strings pointed to by argv, that is the number of
+// input argument
 int main(int argc, char* argv[]) {
   if (argc != 2) {
     std::cerr << "I need exactly one argument\n";
@@ -26,6 +30,7 @@ int main(int argc, char* argv[]) {
     vd[i] = i * 1.1;
   }
 
+  // template function instantiation
   print_vector<int>(v, len);
   std::cout << std::endl;
 
@@ -37,9 +42,9 @@ int main(int argc, char* argv[]) {
   return 0;
 }
 
+// template function definition
 template <typename num>
 void print_vector(const num* vec, const int n) {
   const num* const vEnd = vec + n;  // sentinel. range-for loops rely on this
-  for (; vec < vEnd; ++vec)
-    std::cout << *vec << std::endl;
+  for (; vec < vEnd; ++vec) std::cout << *vec << std::endl;
 }

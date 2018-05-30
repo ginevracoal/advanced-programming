@@ -1,5 +1,6 @@
 #include <iostream>
 
+// each enumerator can be accessed only by using a scoper resolution operator
 enum class color { red, yellow, green };
 // enum color{red=0, yellow=1, green=2}; // equivalent
 

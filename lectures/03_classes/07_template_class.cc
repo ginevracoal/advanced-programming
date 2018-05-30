@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 
+// tells the compiler that this class uses a generic value num
 template <typename num>
 class Vector {
   num* elem;
@@ -23,8 +24,9 @@ class Vector {
 int main() {
   Vector<double> v{10};
 
-  for (auto i = 0; i < v.size(); ++i)
-    v[i] = i;
+  // For variables, auto specifies that the type of the variable that is being
+  // declared will be automatically deduced from its initializer
+  for (auto i = 0; i < v.size(); ++i) v[i] = i;
 
   v.pretty_print();
 
@@ -35,6 +37,8 @@ int main() {
   return 0;
 }
 
+// The member functions must all be treated as generic functions. I have
+// to add the template command to each member function.
 template <typename num>
 void Vector<num>::pretty_print() const {
   std::cout << "Vector allocated at " << elem << std::endl;

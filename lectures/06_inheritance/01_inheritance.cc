@@ -17,6 +17,8 @@ struct Animal {
   }
 };
 
+// Public Inheritance means all public members of the base class are accessible
+// to the derived class.
 struct Dog : public Animal {  // the dog is an animal
   void speak() const noexcept { std::cout << "Bau\n"; }
   Dog() = default;

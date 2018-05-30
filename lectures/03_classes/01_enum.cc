@@ -1,5 +1,5 @@
 #include <iostream>
-
+// enum is a type whose value is restricted to a range of values
 enum color { red, yellow, green };
 // enum color{red=0, yellow=1, green=2}; // equivalent
 

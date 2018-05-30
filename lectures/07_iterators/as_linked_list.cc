@@ -51,6 +51,8 @@ class List<T>::Iterator {
   // ++it
   Iterator& operator++() {
     current = current->next.get();
+    // this returns a pointer to the current object
+    // *this returns the current object
     return *this;
   }
 

@@ -12,6 +12,9 @@ class Animal {
 
   Animal() : Animal{0, 0} {}  // delegating constructor
 
+  // A pure virtual function is used when the base class has a function that
+  // will be defined in its derived class, but it has no meaningful definition
+  // in the base class.
   virtual void speak() const = 0;  // A pure virtual function makes sure that
                                    // the class cannot be instantiated.
                                    // It is called an "Abstract class".

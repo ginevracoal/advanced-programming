@@ -1,6 +1,11 @@
 #include <ap_error.h>
 #include <iostream>
 
+// A virtual function is a member function that you expect to be redefined in
+// derived classes. When you refer to a derived class object using a pointer
+// or a reference to the base class, you can call a virtual function for that
+// object and execute the derived class's version of the function.
+
 struct Animal {
   unsigned int age;
   double weight;
@@ -10,7 +15,6 @@ struct Animal {
   }
 
   Animal() : Animal{0, 0} {}  // delegating constructor
-
   virtual void speak() const noexcept { std::cout << "Unknown\n"; }
   virtual void info() const noexcept {
     std::cout << "age:\t" << age << '\n' << "weight:\t" << weight << '\n';
