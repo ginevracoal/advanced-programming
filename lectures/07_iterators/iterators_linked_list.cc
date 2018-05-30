@@ -8,7 +8,7 @@
 // we'll use three basic functions of unique pointers:
 // get(), release(), reset()
 
-// a unique ptr to a node has the followng structure:s
+// a unique ptr to a node has the following structure:
 // {
 //   bool owned;
 //   node * ptr;
@@ -27,16 +27,35 @@ enum class Insertion_method { push_back, push_front };
 
 template <typename value_type>
 class List {
+  // private by default
+  // private struct node with the proper value_type
+  struct node {
+    value_type val;
+    std::unique_ptr<node> next;  // automatically deleted when out of scope
+    node(const value_type& v, node* n = nullptr) : val{v}, next{n} {}
+    // if I don't specify anything, next pointer is nullptr
+    ~node(){};  // default destructor
+  };
+
+  std::unique_ptr<node> head;  // unique pointer to the first node
+  unsigned int _size;          // number of nodes
+
+  // append the newly created node at the end of the list
+  void push_back(const value_type& v);
+
+  // insert the newly created node in front of the list
+  void push_front(const value_type& v);
+
  public:
   // implement suitable constructor(s) for List
-  List() : _size{0}, head{nullptr} {}
+  List() : head{nullptr}, _size{0} {}
 
   void insert(const value_type& v,
               const Insertion_method m = Insertion_method::push_front);
   // passing v by reference because I don't know its size,
   // otherwise it's better to pass by value.
 
-  void print();
+  void print() const;
 
   // return the size of the list
   unsigned int size() { return _size; }
@@ -62,25 +81,6 @@ class List {
   class constIterator;  // const constructors for class Iterator are not enough
   Iterator begin() const { return Iterator{head.get()}; }
   Iterator end() const { return Iterator{nullptr}; }
-
- private:
-  // private struct node with the proper value_type
-  struct node {
-    value_type val;
-    std::unique_ptr<node> next;  // automatically deleted when out of scope
-    node(const value_type& v, node* n = nullptr) : val{v}, next{n} {}
-    // if I don't specify anything, next pointer is nullptr
-    ~node(){};  // default destructor
-  };
-
-  // append the newly created node at the end of the list
-  void push_back(const value_type& v);
-
-  // insert the newly created node in front of the list
-  void push_front(const value_type& v);
-
-  std::unique_ptr<node> head;  // unique pointer to the first node
-  unsigned int _size;          // number of nodes
 };
 
 template <typename value_type>
@@ -106,16 +106,17 @@ class List<value_type>::Iterator {
     ++(*this);  // increment the current value calling the ++it operator
     return it;  // return by value the previous one
   }
+
+  bool operator==(const Iterator& other) {
+    return this->current ==
+           other.current;  // two iterators are equal if they are
+                           // pointing to the same element
+  }
+
+  bool operator!=(const Iterator& other) {
+    return !(*this == other);  // return current != other.current; works as well
+  }
 };
-
-bool operator==(const Iterator& other) {
-  return this->current == other.current;  // two iterators are equal if they are
-                                          // pointing to the same element
-}
-
-bool operator!=(const Iterator& other) {
-  return !(*this == other);  // return current != other.current; works as well
-}
 
 // constIterator constructor
 
@@ -206,7 +207,7 @@ void List<value_type>::push_back(const value_type& v) {
   _size++;
 }
 
-int main(int argc, char const* argv[]) {
+int main() {
   List<double> list{};
 
   std::cout << "Empty list: ";
@@ -239,7 +240,7 @@ int main(int argc, char const* argv[]) {
 
   sum = 0;
   auto last = list.end();
-  for (auto it = list.begin(); it != last; ++i) {
+  for (auto it = list.begin(); it != last; ++it) {
     sum += *it;
   }
 
