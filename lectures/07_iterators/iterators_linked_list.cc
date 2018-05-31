@@ -20,6 +20,8 @@
 #include <iostream>
 #include <memory>  // for smart pointers
 
+#include "unique_ptr.h"
+
 // using namespace std;
 
 // scoped enum
@@ -31,7 +33,7 @@ class List {
   // private struct node with the proper value_type
   struct node {
     value_type val;
-    std::unique_ptr<node> next;  // automatically deleted when out of scope
+    unique_ptr<node> next;  // automatically deleted when out of scope
     node(const value_type& v, node* n = nullptr) : val{v}, next{n} {}
     // if I don't specify anything, next pointer is nullptr
     ~node(){};  // default destructor
@@ -57,12 +59,12 @@ class List {
 
   void print() const;
 
-  // return the size of the list
-  unsigned int size() { return _size; }
+  // print the size of the list
+  void printSize() { std::cout << "Size is " << _size << ".\n\n"; }
 
   void call_custom_function() {
     node* temp{head.get()};
-    while (temp) {
+    while (temp) {  // temp != nullptr
       custom_function(temp->val);
       temp = temp->next.get();
     }
@@ -133,9 +135,11 @@ class List<value_type>::constIterator : public List<value_type>::Iterator {
 // this method should be used to fill the list
 template <typename value_type>
 void List<value_type>::insert(const value_type& v, const Insertion_method m) {
+  std::cout << "\nPush value " << v << ":\n";
   if (head.get() == nullptr) {
     head.reset(new node{v});  // reset returns a raw pointer
-    // head.reset(new node{v, nullptr});  is the same
+                              // head.reset(new node{v, nullptr});  is the same
+    ++_size;
   } else {
     switch (m) {
       case Insertion_method::push_back:
@@ -193,7 +197,7 @@ void List<value_type>::push_front(const value_type& v) {
   head.reset(new node{v, head.release()});
   // we release the ownership of head
   // and reset it to a pointer to a new node
-  _size++;
+  ++_size;
 }
 
 // push back adds a new node pointed by the last nullptr
@@ -204,45 +208,38 @@ void List<value_type>::push_back(const value_type& v) {
     temp = (temp->next).get();  // move along all the nodes
   }
   temp->next.reset(new node{v});  // move ptr to the last nullptr
-  _size++;
+  ++_size;
 }
 
 int main() {
   List<double> list{};
 
-  std::cout << "Empty list: ";
   list.print();
-  std::cout << "Size is " << list.size() << ".\n\n";
+  list.printSize();
 
-  std::cout << "Push value 1: ";
   list.insert(1.1);
   list.print();
-  std::cout << "Size is " << list.size() << ".\n\n";
+  list.printSize();
 
-  std::cout << "Push value 2: ";
   list.insert(2.2);
   list.print();
-  std::cout << "Size is " << list.size() << ".\n\n";
+  list.printSize();
 
   double sum{0};
-  list.custom_function = [&sum](double& d) { sum += d; };
-  std::cout << "The sum is " << sum << std::endl;
+
+  // using lambda functions
+  auto my_sum = [&sum](double& d) { sum += d; };
+  list.custom_function = my_sum;
 
   list.call_custom_function();  // internally, the list will call
                                 // custom_function
+  std::cout << "The sum is " << sum << std::endl;
 
-  // an alternative would be using lambda functions
-
-  // auto my_sum = [&sum] (double& d){
-  //   sum+=d;
-  // };
-  // list.custom_function = my_sum;
-
-  sum = 0;
-  auto last = list.end();
-  for (auto it = list.begin(); it != last; ++it) {
-    sum += *it;
-  }
+  // sum = 0;
+  // auto last = list.end();
+  // for (auto it = list.begin(); it != last; ++it) {
+  //   sum += *it;
+  // }
 
   // // or I can write
   //   for(auto & x: list){
