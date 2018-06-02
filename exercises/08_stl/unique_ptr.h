@@ -1,12 +1,6 @@
 #ifndef UNIQUE_PTR
 #define UNIQUE_PTR
 
-// cose da fare:
-// - costruire la classe
-// - noexcept
-// - const
-// - provare a usarla in iterators_linked_list
-
 /**
 * std::unique_ptr is a smart pointer that owns and manages another object
 * through a pointer and disposes of that object when the unique_ptr goes out of
@@ -27,19 +21,29 @@ class unique_ptr {
   unique_ptr(T* p) : ptr{p} {}
 
   // move constructor
-  unique_ptr(unique_ptr&& p);
+  unique_ptr(unique_ptr&& p) : ptr{p.release()} {}
 
   // class destructor
-  /** simply resets the the ownership , but why??????*/
+  /** simply resets the the ownership of the object, so that ptr = nullptr
+   * (points to nothing)*/
   ~unique_ptr() { reset(); }
 
-  /** move assignment assigns the unique_ptr to an object */
+  /** move assignment assigns the unique_ptr to an object (transfers the
+   * ownership from u to *this) */
   /** Only non-const unique_ptr can transfer the ownership of the managed object
    * to another unique_ptr. If an object's lifetime is managed by a const
    * std::unique_ptr, it is limited to the scope in which the pointer was
    * created.
    */
-  unique_ptr& operator=(unique_ptr&& u);
+  unique_ptr& operator=(unique_ptr&& u) noexcept {
+    reset(u.release());  // perchè?
+    return *this;
+  }
+
+  // unique_ptr& operator=() noexcept {
+  //   reset();  // perchè?
+  //   return *this;
+  // }
 
   // MODIFIERS
 
@@ -62,14 +66,35 @@ class unique_ptr {
   // OBSERVERS
 
   /** get returns a pointer to the managed object */
-  T* get() { return ptr; }
+  T* get() const { return ptr; }
 
-  /** operator* dereferences the unique_ptr*/
-
-  /** operator->  */
+  /** operator-> dereferences the unique_ptr*/
+  T* operator->() const { return get(); }
 
   /** operator bool checks whether the unique_ptr owns something or not*/
-  operator bool() { return this != nullptr; }
+  operator bool() const { return this != nullptr; }
 };
+
+// NON MEMBER FUNCTIONS
+
+template <typename T, typename U>
+bool operator==(const unique_ptr<T>& x, const unique_ptr<U>& y) noexcept {
+  return x.get() == y.get();
+}
+
+template <typename T>
+bool operator==(const unique_ptr<T>& x, std::nullptr_t) noexcept {
+  return x.get() == nullptr;
+}
+
+template <typename T, typename U>
+bool operator!=(const unique_ptr<T>& x, const unique_ptr<U>& y) noexcept {
+  return x.get() == y.get();
+}
+
+template <typename T>
+bool operator!=(const unique_ptr<T>& x, std::nullptr_t) noexcept {
+  return x.get() == nullptr;
+}
 
 #endif
