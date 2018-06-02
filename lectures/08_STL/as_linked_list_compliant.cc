@@ -1,10 +1,12 @@
+#include <algorithm>
+#include <algorithm>
 #include <iostream>
-#include <memory>
-#include <algorithm>
 #include <iterator>  // need to derive from std::iterator
-#include <algorithm>
+#include <memory>
 #include <numeric>
 #include <vector>
+
+#include "../../exercises/08_stl/unique_ptr.h"  // checking my header
 
 enum class IM { push_back, push_front };
 
@@ -13,6 +15,7 @@ class List {
   struct Node {
     T val;
     std::unique_ptr<Node> next;
+    // unique_ptr next;  // checking my header
     Node(const T& v, Node* n = nullptr) : val{v}, next{n} {}
   };
 
@@ -115,8 +118,7 @@ void List<T>::push_front(const T& v) {
 template <typename T>
 void List<T>::push_back(const T& v) {
   Node* tmp{head.get()};
-  while (tmp->next.get() != nullptr)
-    tmp = tmp->next.get();
+  while (tmp->next.get() != nullptr) tmp = tmp->next.get();
   tmp->next.reset(new Node{v});
 }
 
@@ -133,8 +135,7 @@ void List<T>::print() const {
 
   auto it = this->begin();
   auto it_end = this->end();
-  for (; it != it_end; ++it)
-    std::cout << *it << std::endl;
+  for (; it != it_end; ++it) std::cout << *it << std::endl;
 }
 
 template <typename num>
@@ -178,8 +179,7 @@ int main() {
 
   std::copy(first, last, v.begin());
   std::sort(v.begin(), v.end(), my_comparison<double>{});
-  for (const auto& x : v)
-    std::cout << x << std::endl;
+  for (const auto& x : v) std::cout << x << std::endl;
 
   return 0;
 }
