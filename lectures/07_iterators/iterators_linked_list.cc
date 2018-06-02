@@ -1,7 +1,7 @@
 // lesson 28/11/17 on ITERATORS
 
 // Iterators allow the user to apply a method to the data contained inside the
-// list without knowing its structure
+// list without knowing its structure.
 
 // Linked list
 // Implement a linked list using unique pointers
@@ -20,21 +20,21 @@
 #include <iostream>
 #include <memory>  // for smart pointers
 
-#include "unique_ptr.h"
+#include "../../exercises/08_stl/unique_ptr.h"
 
 // using namespace std;
 
 // scoped enum
 enum class Insertion_method { push_back, push_front };
 
-template <typename value_type>
+template <typename T>
 class List {
   // private by default
-  // private struct node with the proper value_type
+  // private struct node with the proper T
   struct node {
-    value_type val;
+    T val;                  // value type
     unique_ptr<node> next;  // automatically deleted when out of scope
-    node(const value_type& v, node* n = nullptr) : val{v}, next{n} {}
+    node(const T& v, node* n = nullptr) : val{v}, next{n} {}
     // if I don't specify anything, next pointer is nullptr
     ~node(){};  // default destructor
   };
@@ -43,16 +43,16 @@ class List {
   unsigned int _size;          // number of nodes
 
   // append the newly created node at the end of the list
-  void push_back(const value_type& v);
+  void push_back(const T& v);
 
   // insert the newly created node in front of the list
-  void push_front(const value_type& v);
+  void push_front(const T& v);
 
  public:
   // implement suitable constructor(s) for List
   List() : head{nullptr}, _size{0} {}
 
-  void insert(const value_type& v,
+  void insert(const T& v,
               const Insertion_method m = Insertion_method::push_front);
   // passing v by reference because I don't know its size,
   // otherwise it's better to pass by value.
@@ -70,31 +70,42 @@ class List {
     }
   }
 
-  std::function<void(value_type& v)> custom_function;
+  std::function<void(T& v)> custom_function;
 
-  // ITERATOR DECLARATION
+  // ITERATORS
 
-  // we define the iterator inside the class so we know that it iterates through
-  // a list
+  /** We define the iterator inside the class so we know that it iterates
+   * through a list.*/
+
   class Iterator;
+
   Iterator begin() { return Iterator{head.get()}; }
   Iterator end() { return Iterator{nullptr}; }
 
-  class constIterator;  // const constructors for class Iterator are not enough
-  Iterator begin() const { return Iterator{head.get()}; }
-  Iterator end() const { return Iterator{nullptr}; }
+  class ConstIterator;
+  /** ConstIterator begin() and end() are const member functions, meaning that
+   * they do not modify the state of a tree. The compiler will catch accidental
+   * attempts to violate this promise. Iterator is not enough: Const functions
+   * can be called on any type of object, while non-const functions can only be
+   * called on non-const objects.
+  */
+  ConstIterator begin() const { return ConstIterator{head.get()}; }
+  ConstIterator end() const { return ConstIterator{nullptr}; }
 };
 
-template <typename value_type>
-class List<value_type>::Iterator {
-  using node = List<value_type>::node;  // using an alias
+// ======================================================
+// ITERATOR DEFINITIONS
+
+template <typename T>
+class List<T>::Iterator {
+  using node = List<T>::node;  // using an alias for readability
   node* current;
 
  public:
   Iterator(node* n) : current{n} {}
 
-  // dereference operator
-  value_type& operator*() const { return current->val; }
+  /** dereference operator returns the object pointed to by the iterator */
+  T& operator*() const { return current->val; }
 
   // ++it operator
   Iterator& operator++() {
@@ -103,38 +114,45 @@ class List<value_type>::Iterator {
   }
 
   // it++ operator
-  Iterator& operator++(int) {  // we take an int to distinguish it from ++it
+  Iterator operator++(int) {  // we take an int to distinguish it from ++it
     Iterator it{current};
     ++(*this);  // increment the current value calling the ++it operator
-    return it;  // return by value the previous one
+    return it;  // return the previous one
   }
 
+  /** Two iterators are equal if they point to the same object. The operator is
+   * passed through const reference. */
   bool operator==(const Iterator& other) {
-    return this->current ==
-           other.current;  // two iterators are equal if they are
-                           // pointing to the same element
+    return this->current == other.current;
+    // return current == other.current; // is the same
   }
 
   bool operator!=(const Iterator& other) {
-    return !(*this == other);  // return current != other.current; works as well
+    return !(*this == other);
+    // return current != other.current; // is the same
   }
 };
 
-// constIterator constructor
-
-template <typename value_type>
-class List<value_type>::constIterator : public List<value_type>::Iterator {
-  using parent = List<value_type>::Iterator;
+/** ConstIterator inherits Iterator class. */
+template <typename T>
+class List<T>::ConstIterator : public List<T>::Iterator {
+  using parent = List<T>::Iterator;
 
  public:
-  using List<value_type>::Iterator;
-  const value_type& operator*() const { return parent::operator*(); }
+  using parent::Iterator;
+  /** The only difference with Iterator class is the dereference: in this case
+   * you can't reset the pointer to a new object, because it is a const
+   * reference. */
+  const T& operator*() const { return parent::operator*(); }
 };
+
+// ======================================================
+// MEMBER FUNCTIONS
 
 // insert a new node with the value v according to the method m
 // this method should be used to fill the list
-template <typename value_type>
-void List<value_type>::insert(const value_type& v, const Insertion_method m) {
+template <typename T>
+void List<T>::insert(const T& v, const Insertion_method m) {
   std::cout << "\nPush value " << v << ":\n";
   if (head.get() == nullptr) {
     head.reset(new node{v});  // reset returns a raw pointer
@@ -158,8 +176,8 @@ void List<value_type>::insert(const value_type& v, const Insertion_method m) {
 }
 
 // print the values of the nodes
-template <typename value_type>
-void List<value_type>::print() const {
+template <typename T>
+void List<T>::print() const {
   // node* temp = head.get();  // get() returns a pointer to the managed object
 
   // while (temp) {  // temp != nullptr
@@ -181,8 +199,8 @@ void List<value_type>::print() const {
 
 // delete all the nodes of the list
 
-// template <typename value_type>
-// void List<value_type>::reset() {
+// template <typename T>
+// void List<T>::reset() {
 //   std::unique_ptr<node> temp = std::move(head);
 //   while (temp) {  // temp != nullptr
 //     temp->next = std::move(temp);
@@ -192,8 +210,8 @@ void List<value_type>::print() const {
 // }
 
 // push front adds a new node where the head is pointing
-template <typename value_type>
-void List<value_type>::push_front(const value_type& v) {
+template <typename T>
+void List<T>::push_front(const T& v) {
   head.reset(new node{v, head.release()});
   // we release the ownership of head
   // and reset it to a pointer to a new node
@@ -201,8 +219,8 @@ void List<value_type>::push_front(const value_type& v) {
 }
 
 // push back adds a new node pointed by the last nullptr
-template <typename value_type>
-void List<value_type>::push_back(const value_type& v) {
+template <typename T>
+void List<T>::push_back(const T& v) {
   node* temp = head.get();
   while (temp->next) {          // or while (temp->next.get() != nullprt) {
     temp = (temp->next).get();  // move along all the nodes
@@ -210,6 +228,9 @@ void List<value_type>::push_back(const value_type& v) {
   temp->next.reset(new node{v});  // move ptr to the last nullptr
   ++_size;
 }
+
+// ======================================================
+//  MAIN
 
 int main() {
   List<double> list{};

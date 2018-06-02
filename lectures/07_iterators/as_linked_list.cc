@@ -28,6 +28,7 @@ class List {
       tmp = tmp->next.get();
     }
   }
+
   std::function<void(T&)> custom_function;
 
   class Iterator;
